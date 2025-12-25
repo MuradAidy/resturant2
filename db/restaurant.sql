@@ -1,8 +1,8 @@
 CREATE TABLE IF NOT EXISTS restaurants (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  name TEXT,
-  meal TEXT,
-  rating REAL
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255),
+  meal VARCHAR(100),
+  rating FLOAT
 );
 
 INSERT INTO restaurants (name, meal, rating) VALUES

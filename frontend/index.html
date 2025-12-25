@@ -2,17 +2,31 @@
 <html>
   <body>
     <h1>Restaurant Recommendation</h1>
-    <input id="meal" placeholder="Enter meal" />
-    <button onclick="getReco()">Recommend..</button>
+
+    <input id="meal" placeholder="Enter meal (pizza, shawarma, burger)" />
+    <button onclick="getReco()">Recommend</button>
+
     <p id="out"></p>
 
     <script>
-      const API = "http://localhost:3001/api/recommend";
+      const API = "http://192.168.35.129:3002/api/recommend";
+
       async function getReco() {
-        const m = meal.value.trim();
-        const r = await fetch(API + "?meal=" + m);
-        const d = await r.json();
-        out.textContent = d.recommended ? d.recommended.name : "Not found";
+        try {
+          const m = meal.value.trim();
+          if (!m) {
+            out.textContent = "Write a meal first.";
+            return;
+          }
+
+          const r = await fetch(API + "?meal=" + encodeURIComponent(m));
+          const d = await r.json();
+
+          out.textContent = d.recommended ? d.recommended.name : "Not found";
+        } catch (e) {
+          out.textContent = "Error: cannot reach backend";
+          console.log(e);
+        }
       }
     </script>
   </body>
