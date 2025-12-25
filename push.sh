@@ -1,30 +1,26 @@
-#!/usr/bin/env bash
+#!/bin/bash
 set -e
 
-MSG="${1:-update}"
-BRANCH="$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo main)"
+msg="$1"
 
 cd "$(dirname "$0")"
 
-if [ ! -d ".git" ]; then
+if [ ! -d ".git" ];
+then
   git init
-  git branch -M "$BRANCH" || true
+  git branch -M main
+  git remote add origin https://github.com/MuradAidy/resturant2.git 2>/dev/null || true
+  echo "Git repo ready."
 fi
 
-git add -A
+git add .
 
 if git diff --cached --quiet; then
-  echo "No changes to push."
+  echo "No changes."
   exit 0
-fi
-
-git commit -m "$MSG"
-
-if git remote get-url origin >/dev/null 2>&1; then
-  git pull --rebase origin "$BRANCH" || true
-  git push -u origin "$BRANCH"
-  echo "Pushed "
 else
-  echo "origin not set. Add it like:"
-  echo "git remote add origin <REPO_URL>"
+  git commit -m "$msg"
 fi
+
+git push origin main
+echo "Pushed"
